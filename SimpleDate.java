@@ -140,16 +140,16 @@ public class SimpleDate {
 
 	public void save (String fileName) {
 		PrintWriter out = null;
-        try {
-            out = new PrintWriter(new BufferedWriter(new FileWriter(fileName)));
-        }
-        catch (Exception e) {
-            e.printStackTrace();
-        }
-        out.print(this.day);
-        out.print(this.month);
-        out.print(this.year);
-        out.close();
+        	try {
+            	out = new PrintWriter(new BufferedWriter(new FileWriter(fileName)));
+        	}
+        	catch (Exception e) {
+            	e.printStackTrace();
+       		}
+        	out.print(this.day);
+        	out.print(this.month);
+        	out.print(this.year);
+        	out.close();
 	}
 
 	public void load (String fileName) {
