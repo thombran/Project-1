@@ -139,11 +139,36 @@ public class SimpleDate {
 
 
 	public void save (String fileName) {
-		// your code goes here
+		PrintWriter out = null;
+        try {
+            out = new PrintWriter(new BufferedWriter(new FileWriter(fileName)));
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
+        out.print(this.day);
+        out.print(this.month);
+        out.print(this.year);
+        out.close();
 	}
 
 	public void load (String fileName) {
-		// your code goes here
+		try{
+            Scanner fileReader = new Scanner(new File(fileName));
+            this.day = fileReader.nextInt();
+            this.month = fileReader.nextInt();
+            this.year = fileReader.nextInt();
+
+            System.out.print (this.day);
+            System.out.print ("/" + this.month);
+            System.out.print ("/" + this.year);
+        }
+
+        // problem reading the file
+        catch(Exception error){
+            throw new RuntimeException();
+            
+        }
 	}
 
 	public int ordinalDate(){
