@@ -146,8 +146,8 @@ public class SimpleDate {
         	catch (Exception e) {
             	e.printStackTrace();
        		}
-        	out.print(this.day);
         	out.print(this.month);
+        	out.print(this.day);
         	out.print(this.year);
         	out.close();
 	}
@@ -159,8 +159,8 @@ public class SimpleDate {
             this.month = fileReader.nextInt();
             this.year = fileReader.nextInt();
 
-            System.out.print (this.day);
-            System.out.print ("/" + this.month);
+            System.out.print (this.month);
+            System.out.print ("/" + this.day);
             System.out.print ("/" + this.year);
         }
 
