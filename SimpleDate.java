@@ -180,6 +180,19 @@ public class SimpleDate {
 		days += this.day - 1;
 		return days;
 	}
+	public void increment(){
+        day ++;
+        if (day > DAYS_IN_MONTH[month]) {
+            month ++;
+            day = 1;
+            if (month == 13) {
+                month = 1;
+                day = 1;
+                year ++;
+                
+            }
+        }
+    }
 
 	public static int getNumberOfSimpleDates(){
 		return counter;
