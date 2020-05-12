@@ -103,6 +103,7 @@ public class SimpleDate {
 		this.month = other.month;
 		counter += 1;
 	   }
+	  throw new IllegalArgumentException();
 	}
 
 	private  int daysInMonth(int month, int year) {
