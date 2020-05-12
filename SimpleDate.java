@@ -58,12 +58,22 @@ public class SimpleDate {
 	 * represent a valid date.
 	 ****************************************************************/
 	public SimpleDate (String date) {
-		String[] parts = date.split("/");
-		month = Integer.parseInt(parts[0]);
-		day = Integer.parseInt(parts[1]);
-		year = Integer.parseInt(parts[2]);
-		counter += 1;
-		}
+	   if (date == null)
+            	    throw new IllegalArgumentException();
+
+           String[] parts = date.split("/");
+
+           if (parts.length == 3) {
+              month = Integer.parseInt(parts[0]);
+              day = Integer.parseInt(parts[1]);
+              year = Integer.parseInt(parts[2]);
+              counter += 1;
+
+
+        }
+        else
+            throw new IllegalArgumentException()
+    }
 
 	/******************************************************************
 	 * Constructor taking month, day, and year as integers.
@@ -87,10 +97,12 @@ public class SimpleDate {
 
 	// THE REST OF THE METHODS NEED JAVA STYLE GUIDING.
 	public SimpleDate (SimpleDate other) {
+	   if (other != null) {
 		this.day = other.day;
 		this.year = other.year;
 		this.month = other.month;
 		counter += 1;
+	   }
 	}
 
 	private  int daysInMonth(int month, int year) {
