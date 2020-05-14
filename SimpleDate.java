@@ -95,6 +95,8 @@ public class SimpleDate {
         this.month = month;
         this.day = day;
         this.year = year;
+        if(isLeapYear() && month == 2 && day > 28)
+            return;
         if (month > 12 || day > DAYS_IN_MONTH[month] || day > 31 || year < 1753 || year > 2020
                 || month < 1 || day < 1 || (!isLeapYear() && month == 02 && day > 28)) {
             throw new IllegalArgumentException();
@@ -301,13 +303,12 @@ public class SimpleDate {
             for (int i = 0; i < n; i++)
                 fromNow.increment();
             return fromNow;
-        } else if (n < 0) {
-            for (int i = 0; i < n; i++)
+        }
+        else if (n < 0) {
+            for (int i = 0; i > n; i--)
                 fromNow.decrement();
             return fromNow;
-        } else if (n == 0)
-            return this;
-        else
-            throw new IllegalArgumentException();
+        }
+        else return this;
     }
 } // end SimpleDate
