@@ -280,25 +280,29 @@ public class SimpleDate {
     }
 
     public void decrement() {
-        this.day--;
         if (this.day == 1) {
             if (isLeapYear() && this.month == 03 && this.day == 1) {
                 this.month--;
                 this.day = 29;
+                return;
             }
-            this.month--;
-            this.day = DAYS_IN_MONTH[month];
-            if (month == 1) {
+            else if (month == 1 && day == 1) {
                 month = 12;
                 day = 31;
                 year--;
+                return;
+            }
+            else {
+                this.month--;
+                this.day = DAYS_IN_MONTH[month];
+                return;
             }
         }
+        this.day--;
     }
 
     public SimpleDate daysFromNow(int n) {
         SimpleDate fromNow = new SimpleDate(this.month, this.day, this.year);
-        int days;
         if (n > 0) {
             for (int i = 0; i < n; i++)
                 fromNow.increment();
