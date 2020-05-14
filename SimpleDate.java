@@ -141,8 +141,8 @@ public class SimpleDate {
 
 
     public boolean equals(Object other) {
-		SimpleDate o;
-    	if (other != null) {
+        SimpleDate o;
+        if (other != null) {
             if (other instanceof SimpleDate) {
                 o = (SimpleDate) other;
                 if (this.day == o.day && this.month == o.month && this.year == o.year) {
@@ -265,7 +265,7 @@ public class SimpleDate {
     public void increment() {
         this.day++;
         if (this.day > DAYS_IN_MONTH[this.month]) {
-            if(isLeapYear() && this.month == 02 && this.day < 30)
+            if (isLeapYear() && this.month == 02 && this.day < 30)
                 return;
             this.month++;
             day = 1;
@@ -275,5 +275,39 @@ public class SimpleDate {
                 year++;
             }
         }
+    }
+
+    public void decrement() {
+        this.day--;
+        if (this.day == 1) {
+            if (isLeapYear() && this.month == 03 && this.day == 1) {
+                this.month--;
+                this.day = 29;
+            }
+            this.month--;
+            this.day = DAYS_IN_MONTH[month];
+            if (month == 1) {
+                month = 12;
+                day = 31;
+                year--;
+            }
+        }
+    }
+
+    public SimpleDate daysFromNow(int n) {
+        SimpleDate fromNow = new SimpleDate(this.month, this.day, this.year);
+        int days;
+        if (n > 0) {
+            for (int i = 0; i < n; i++)
+                fromNow.increment();
+            return fromNow;
+        } else if (n < 0) {
+            for (int i = 0; i < n; i++)
+                fromNow.decrement();
+            return fromNow;
+        } else if (n == 0)
+            return this;
+        else
+            throw new IllegalArgumentException();
     }
 } // end SimpleDate
