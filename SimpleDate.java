@@ -1,6 +1,9 @@
 package project1;
 
-import java.io.*;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.PrintWriter;
 import java.util.Scanner;
 
 /**
@@ -48,6 +51,9 @@ public class SimpleDate {
 
     private static int counter = 0;
 
+    /******************************************************************
+     * Default constructor that sets the SimpleDate to lowest possible date.
+     *****************************************************************/
     public SimpleDate() {
         month = 01;
         day = 01;
@@ -70,11 +76,10 @@ public class SimpleDate {
         month = Integer.parseInt(parts[0]);
         day = Integer.parseInt(parts[1]);
         year = Integer.parseInt(parts[2]);
-        if (month > 12 || day > 31 || year < 1753 || year > 2020
-                || month < 1 || day < 1) { //TODO clean up these if statements with helper method
+        if ((month > 12 || month < 1) || day > DAYS_IN_MONTH[month] || day > 31 || year < 1753 || year > 2020
+                || month < 1 || day < 1 || (!isLeapYear() && month == 02 && day > 28))
             throw new IllegalArgumentException();
-        } else if (!isLeapYear() && month == 02 && day > 28)
-            throw new IllegalArgumentException();
+
         counter += 1;
     }
 
@@ -96,7 +101,7 @@ public class SimpleDate {
         this.day = day;
         this.year = year;
         if(isLeapYear() && month == 2 && day > 28)
-            return;
+            throw new IllegalArgumentException();
         if (month > 12 || day > DAYS_IN_MONTH[month] || day > 31 || year < 1753 || year > 2020
                 || month < 1 || day < 1 || (!isLeapYear() && month == 02 && day > 28)) {
             throw new IllegalArgumentException();
@@ -109,14 +114,14 @@ public class SimpleDate {
         this.day = other.day;
         this.year = other.year;
         this.month = other.month;
-        if (month > 12 || day > DAYS_IN_MONTH[month] || day > 31 || year < 1753 || year > 2020
-                || month < 1 || day < 1 || (!isLeapYear() && month == 02 && day > 28)) {
-            throw new IllegalArgumentException();
-        }
+//        if (month > 12 || day > DAYS_IN_MONTH[month] || day > 31 || year < 1753 || year > 2020
+//                || month < 1 || day < 1 || (!isLeapYear() && month == 02 && day > 28)) {
+//            throw new IllegalArgumentException();
+//        }
         counter += 1;
     }
 
-    private int daysInMonth(int month, int year) {
+    public int daysInMonth(int month, int year) {
         if (month > 12 || month < 1 || year < 1753) {
             throw new IllegalArgumentException();
         }
