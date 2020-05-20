@@ -78,11 +78,13 @@ public class SimpleDate {
      ****************************************************************/
     public SimpleDate(String date) {
         String[] parts = date.split("/");
+        if(parts.length < 3)
+            throw new IllegalArgumentException();
         month = Integer.parseInt(parts[0]);
         day = Integer.parseInt(parts[1]);
         year = Integer.parseInt(parts[2]);
-        if ((month > 12 || month < 1) || day > DAYS_IN_MONTH[month] || day > 31 || year < 1753 || year > 2020
-                || month < 1 || day < 1 || (!isLeapYear() && month == 02 && day > 28))
+        if ((month > 12 || month < 1) || day > DAYS_IN_MONTH[month] || year < 1753
+                || day < 1 || (!isLeapYear() && month == 2 && day > 28))
             throw new IllegalArgumentException();
 
         counter += 1;
@@ -107,7 +109,7 @@ public class SimpleDate {
         this.year = year;
         if (isLeapYear() && month == 2 && day > 28)
             throw new IllegalArgumentException();
-        if (month > 12 || day > DAYS_IN_MONTH[month] || day > 31 || year < 1753 || year > 2020
+        if (month > 12 || day > DAYS_IN_MONTH[month] || year < 1753
                 || month < 1 || day < 1 || (!isLeapYear() && month == 02 && day > 28)) {
             throw new IllegalArgumentException();
         }
@@ -124,10 +126,10 @@ public class SimpleDate {
         this.day = other.day;
         this.year = other.year;
         this.month = other.month;
-//        if (month > 12 || day > DAYS_IN_MONTH[month] || day > 31 || year < 1753 || year > 2020
-//                || month < 1 || day < 1 || (!isLeapYear() && month == 02 && day > 28)) {
-//            throw new IllegalArgumentException();
-//        }
+        if (month > 12 || day > DAYS_IN_MONTH[month] || year < 1753
+                || month < 1 || day < 1 || (!isLeapYear() && month == 02 && day > 28)) {
+            throw new IllegalArgumentException();
+        }
         counter += 1;
     }
 
@@ -281,7 +283,7 @@ public class SimpleDate {
      * leading up to the calling date object
      */
     public int ordinalDate() {
-        int days = 0;
+        int days = 1;
         for (int i = 0; i < this.month; i++)
             days += DAYS_IN_MONTH[i];
         if (this.isLeapYear() && this.month > 2)
@@ -460,7 +462,7 @@ public class SimpleDate {
      * @return Returns true if this date is less than the other
      */
     public boolean lesserMD(SimpleDate other) {
-        return this.day < other.day && (this.month <= other.month);
+        return this.month <= other.month;
     }
 
     /**
@@ -471,7 +473,7 @@ public class SimpleDate {
      * @return Returns true if this date is greater than the other
      */
     public boolean greaterMD(SimpleDate other) {
-        return this.day > other.day && (this.month >= other.month);
+        return this.month >= other.month;
     }
 
     /**
@@ -482,7 +484,7 @@ public class SimpleDate {
      * @return Returns true if this date is less than the other
      */
     public boolean lesserMDY(SimpleDate other) {
-        return this.day < other.day && (this.month <= other.month) || (this.year < other.year);
+        return this.month <= other.month || (this.year < other.year);
     }
 
     /**
@@ -493,7 +495,7 @@ public class SimpleDate {
      * @return Returns true if this date is less than the other
      */
     public boolean greaterMDY(SimpleDate other) {
-        return this.day > other.day && (this.month >= other.month) || (this.year > other.year);
+        return this.month >= other.month || (this.year > other.year);
     }
 
     /**
@@ -506,31 +508,33 @@ public class SimpleDate {
 
     public int daysSince(SimpleDate other) {
         int days = 0;
-        if (this.year == other.year) {
-            if (this.lesserMD(other)) {
-                while (this.day != other.day || (this.month != other.month)) {
-                    this.increment();
+        SimpleDate temp1 = new SimpleDate(this);
+        SimpleDate temp2 = new SimpleDate(other);
+        if (temp1.year == temp2.year) {
+            if (temp1.lesserMD(temp2)) {
+                while (temp1.day != temp2.day || (temp1.month != temp2.month)) {
+                    temp1.increment();
                     days--;
                 }
                 return days;
-            } else if (this.greaterMD(other)) {
-                while (this.day != other.day || this.month != other.month) {
-                    this.decrement();
+            } else if (temp1.greaterMD(temp2)) {
+                while (temp1.day != temp2.day || temp1.month != temp2.month) {
+                    temp1.decrement();
                     days++;
                 }
                 return days;
             } else
                 return 0;
         } else {
-            if (this.lesserMDY(other)) {
-                while (this.day != other.day || this.month != other.month || this.year != other.year) {
-                    this.increment();
+            if (temp1.lesserMDY(temp2)) {
+                while (temp1.day != temp2.day || temp1.month != temp2.month || temp1.year != temp2.year) {
+                    temp1.increment();
                     days--;
                 }
                 return days;
-            } else if (this.greaterMDY(other)) {
-                while (this.day != other.day || this.month != other.month || this.year != other.year) {
-                    this.decrement();
+            } else if (temp1.greaterMDY(temp2)) {
+                while (temp1.day != temp2.day || temp1.month != temp2.month || temp1.year != temp2.year) {
+                    temp1.decrement();
                     days++;
                 }
                 return days;
@@ -538,5 +542,11 @@ public class SimpleDate {
                 return 0;
         }
 
+    }
+
+    public static void main (String[] args){
+        SimpleDate s = new SimpleDate("3/1/2020");
+        SimpleDate s2 = new SimpleDate("2/28/2020");
+        System.out.println(s2.daysSince(s));
     }
 }// end SimpleDate
