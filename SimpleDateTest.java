@@ -313,15 +313,16 @@ public class SimpleDateTest {
     @Test
     public void testDaysFromNow() {
         SimpleDate d1 = new SimpleDate(3,01,2020);
-        d1.daysFromNow(20);
-        assertTrue(d1.getDay() == 21);
+        SimpleDate d2 = new SimpleDate(3,21,2020);
+        Assert.assertEquals(d2, d1.daysFromNow(20));
+
     }
     // Testing daysFromNow method for correct days being subtracted to SimpleDate
     @Test
     public void testDaysFromNow2() {
         SimpleDate d1 = new SimpleDate(3,21,2020);
-        d1.daysFromNow(-20);
-        assertTrue(d1.getDay() == 1);
+        SimpleDate d2 = new SimpleDate(3,11,2020);
+        Assert.assertEquals(d2, d1.daysFromNow(-10));
     }
     // Testing daysFromNow method for no days being added or subtracted
     @Test
@@ -334,18 +335,15 @@ public class SimpleDateTest {
     @Test
     public void testDaysFromNow4() {
         SimpleDate d1 = new SimpleDate(3,01,2020);
-        d1.daysFromNow(31);
-        assertTrue(d1.getDay() == 01);
-        assertTrue(d1.getMonth() == 04);
+        SimpleDate d2 = new SimpleDate(04,01,2020);
+        Assert.assertEquals(d2, d1.daysFromNow(31));
     }
     // Testing daysFromNow method for correct days month and year being added to SimpleDate
     @Test
     public void testDaysFromNow5() {
         SimpleDate d1 = new SimpleDate(12,01,2020);
-        d1.daysFromNow(31);
-        assertTrue(d1.getDay() == 01);
-        assertTrue(d1.getMonth() == 01);
-        assertTrue(d1.getYear() == 2021);
+        SimpleDate d2 = new SimpleDate(01,01,2021);
+        Assert.assertEquals(d2, d1.daysFromNow(31));
     }
     // Testing counter for correct amount
     @Test
