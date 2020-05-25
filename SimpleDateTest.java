@@ -401,8 +401,8 @@ public class SimpleDateTest {
     @Test
     public void testLesserMD2() {
         SimpleDate d1 = new SimpleDate(12, 31, 2010);
-        SimpleDate d2 = new SimpleDate(12, 30, 2010);
-        assertFalse(d2.lesserMD(d1));
+        SimpleDate d2 = new SimpleDate(11, 30, 2010);
+        assertFalse(d1.lesserMD(d2));
     }
     // Testing greaterMD method
     @Test
