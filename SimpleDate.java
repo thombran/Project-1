@@ -34,22 +34,32 @@ public class SimpleDate {
      */
     private int year;
 
-    // Days in each month (assuming months are numbered beginning with 1)
+    /**
+     * Days in each month (assuming months are numbered beginning with 1)
+     **/
     private static final int[] DAYS_IN_MONTH = {0, 31, 28, 31, 30, 31, 30, 31,
             31, 30, 31, 30, 31};
 
-    // List of months in order from January - December
+    /**
+     *  List of months in order from January - December
+     **/
     private static final String[] MONTHS = {"January", "February", "March", "April", "May",
             "June", "July", "August", "September", "October", "November",
             "December"};
 
 
-    // Number of months in a year
+    /**
+     * Number of months in a year
+     **/
     private static final int NUM_MONTHS = 12;
-    // Number of days in a year
+    /**
+     * Number of days in a year
+     **/
     private static final int DAYS_YEAR = 365;
 
-    // The minimum year accepted as a date in the program
+    /**
+     * The minimum year accepted as a date in the program
+     **/
     public static final int MIN_YEAR = 1753;
     /**
      * Keeps track of how many instances of SimpleDate objects have been created
@@ -442,15 +452,15 @@ public class SimpleDate {
      * @return The new date after moving the date n days
      */
     public SimpleDate daysFromNow(int n) {
-        SimpleDate fromNow = new SimpleDate(this.month, this.day, this.year);
+        //SimpleDate fromNow = new SimpleDate(this.month, this.day, this.year);
         if (n > 0) {
             for (int i = 0; i < n; i++)
-                fromNow.increment();
-            return fromNow;
+                this.increment();
+            return this;
         } else if (n < 0) {
             for (int i = 0; i > n; i--)
-                fromNow.decrement();
-            return fromNow;
+                this.decrement();
+            return this;
         } else return this;
     }
 
@@ -463,6 +473,7 @@ public class SimpleDate {
      */
     public boolean lesserMD(SimpleDate other) {
         return this.month <= other.month;
+
     }
 
     /**
@@ -518,7 +529,7 @@ public class SimpleDate {
                 }
                 return days;
             } else if (temp1.greaterMD(temp2)) {
-                while (temp1.day != temp2.day || temp1.month != temp2.month) {
+                while (temp1.day != temp2.day || (temp1.month != temp2.month)) {
                     temp1.decrement();
                     days++;
                 }
@@ -542,11 +553,5 @@ public class SimpleDate {
                 return 0;
         }
 
-    }
-
-    public static void main (String[] args){
-        SimpleDate s = new SimpleDate("3/1/2020");
-        SimpleDate s2 = new SimpleDate("2/28/2020");
-        System.out.println(s2.daysSince(s));
     }
 }// end SimpleDate
