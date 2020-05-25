@@ -119,8 +119,8 @@ public class SimpleDate {
         this.year = year;
         if (isLeapYear() && month == 2 && day > 28)
             throw new IllegalArgumentException();
-        if (month > 12 || day > DAYS_IN_MONTH[month] || year < 1753
-                || month < 1 || day < 1 || (!isLeapYear() && month == 02 && day > 28)) {
+        if ((month > 12 || month < 1) || (day > DAYS_IN_MONTH[month] || day < 1) || year < 1753
+                || (!isLeapYear() && month == 02 && day > 28)) {
             throw new IllegalArgumentException();
         }
         counter += 1;
@@ -452,15 +452,15 @@ public class SimpleDate {
      * @return The new date after moving the date n days
      */
     public SimpleDate daysFromNow(int n) {
-        //SimpleDate fromNow = new SimpleDate(this.month, this.day, this.year);
+        SimpleDate fromNow = new SimpleDate(this.month, this.day, this.year);
         if (n > 0) {
             for (int i = 0; i < n; i++)
-                this.increment();
-            return this;
+                fromNow.increment();
+            return fromNow;
         } else if (n < 0) {
             for (int i = 0; i > n; i--)
-                this.decrement();
-            return this;
+                fromNow.decrement();
+            return fromNow;
         } else return this;
     }
 
