@@ -407,21 +407,28 @@ public class SimpleDateTest {
     public void testGreaterMD() {
         SimpleDate d1 = new SimpleDate(12, 31, 2010);
         SimpleDate d2 = new SimpleDate(12, 30, 2010);
-        d2.greaterMD(d1);
+        assertTrue(d2.greaterMD(d1));
     }
-    // Testing lesserMDY method
+    // Testing greaterMD method for false
+    @Test
+    public void testGreaterMD2() {
+        SimpleDate d1 = new SimpleDate(12, 31, 2010);
+        SimpleDate d2 = new SimpleDate(12, 30, 2010);
+        assertFalse(d1.greaterMD(d2));
+    }
+    // Testing lesserMDY method for true
     @Test
     public void testLesserMDY() {
         SimpleDate d1 = new SimpleDate(12, 31, 2010);
-        SimpleDate d2 = new SimpleDate(12, 30, 2010);
-        d2.lesserMDY(d1);
+        SimpleDate d2 = new SimpleDate(11, 30, 2010);
+        assertTrue(d2.lesserMDY(d1));
     }
-    // Testing greaterMDY method
+    // Testing greaterMDY method for false
     @Test
     public void testGreaterMDY() {
         SimpleDate d1 = new SimpleDate(12, 31, 2010);
-        SimpleDate d2 = new SimpleDate(12, 30, 2010);
-        d2.greaterMDY(d1);
+        SimpleDate d2 = new SimpleDate(11, 30, 2010);
+        assertFalse(d2.greaterMDY(d1));
     }
 
     @Test
