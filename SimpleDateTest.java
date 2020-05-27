@@ -7,11 +7,9 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 /**
- * This is just a small sample of JUnits, you are to write
- * many many more to have thorough coverage of your code; beyond 100%
- * statement coverage
+ * JUnit tests created to test every function of SimpleDate
  *
- * @author fergusor
+ * @author Brandon and Dylan
  */
 
 public class SimpleDateTest {
@@ -53,6 +51,13 @@ public class SimpleDateTest {
         SimpleDate d1 = new SimpleDate("3/1/2012");
         SimpleDate d2 = new SimpleDate("3/1/2013");
         assertTrue(d1.compareTo(d2) == -1);
+    }
+    // Testing the compare method for different year
+    @Test (expected = IllegalArgumentException.class)
+    public void testCompareTo5() {
+        SimpleDate d1 = new SimpleDate("3/1/2012");
+        SimpleDate d2 = new SimpleDate("3/1/2013");
+        d1.compareTo(null);
     }
 
 
@@ -426,11 +431,18 @@ public class SimpleDateTest {
         SimpleDate d2 = new SimpleDate(11, 30, 2010);
         assertFalse(d2.greaterMD(d1));
     }
-    // Testing lesserMDY method for true
+    // Testing lesserMDY method for true different month
     @Test
     public void testLesserMDY() {
         SimpleDate d1 = new SimpleDate(12, 31, 2010);
         SimpleDate d2 = new SimpleDate(11, 30, 2010);
+        assertTrue(d2.lesserMDY(d1));
+    }
+    // Testing lesserMDY method for true same month
+    @Test
+    public void testLesserMDY2() {
+        SimpleDate d1 = new SimpleDate(12, 31, 2010);
+        SimpleDate d2 = new SimpleDate(12, 30, 2010);
         assertTrue(d2.lesserMDY(d1));
     }
     // Testing greaterMDY method for false
@@ -439,6 +451,20 @@ public class SimpleDateTest {
         SimpleDate d1 = new SimpleDate(12, 31, 2010);
         SimpleDate d2 = new SimpleDate(11, 30, 2010);
         assertFalse(d2.greaterMDY(d1));
+    }
+    // Testing greaterMDY method for true same month
+    @Test
+    public void testGreaterMDY2() {
+        SimpleDate d1 = new SimpleDate(12, 31, 2010);
+        SimpleDate d2 = new SimpleDate(12, 30, 2010);
+        assertTrue(d1.greaterMDY(d2));
+    }
+    // Testing greaterMDY method for true different month
+    @Test
+    public void testGreaterMDY3() {
+        SimpleDate d1 = new SimpleDate(12, 31, 2010);
+        SimpleDate d2 = new SimpleDate(11, 30, 2010);
+        assertTrue(d1.greaterMDY(d2));
     }
     // Testing daysSince method for negative days
     @Test
@@ -509,7 +535,7 @@ public class SimpleDateTest {
         SimpleDate d1 = new SimpleDate(03, 1, 2020);
         d1.setMonth(20);
     }
-   
+
     // Testing setDay method for correct day set
     @Test
     public void testSetDay() {
@@ -539,6 +565,14 @@ public class SimpleDateTest {
     // Testing getNumberOfSimpleDates method for correct amount
     @Test
     public void testGetNumberOfSimpleDates() {
+        SimpleDate.setCounter(0);
+        SimpleDate d1 = new SimpleDate(12, 31, 2010);
+        SimpleDate d2 = new SimpleDate(12, 31, 2010);
+        assertTrue(d2.getNumberOfSimpleDates() == 2);
+    }
+    // Testing getNumberOfSimpleDates method for correct amount
+    @Test
+    public void testGetNumberOfSimpleDates2() {
         SimpleDate.setCounter(0);
         SimpleDate d1 = new SimpleDate(12, 31, 2010);
         SimpleDate d2 = new SimpleDate(12, 31, 2010);
