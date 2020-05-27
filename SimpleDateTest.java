@@ -3,7 +3,8 @@ package project1;
 import org.junit.Assert;
 import org.junit.Test;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 /**
  * This is just a small sample of JUnits, you are to write
@@ -44,13 +45,14 @@ public class SimpleDateTest {
     public void testCompareTo3() {
         SimpleDate d1 = new SimpleDate("3/1/2013");
         SimpleDate d2 = new SimpleDate("3/1/2013");
-        assertEquals(0, d1.compareTo(d2));
+        assertTrue(d1.compareTo(d2) == 0);
     }
+    // Testing the compare method for different year
     @Test
     public void testCompareTo4() {
         SimpleDate d1 = new SimpleDate("3/1/2012");
         SimpleDate d2 = new SimpleDate("3/1/2013");
-        assertEquals(d1.compareTo(d2), -1);
+        assertTrue(d1.compareTo(d2) == -1);
     }
 
 
@@ -87,18 +89,19 @@ public class SimpleDateTest {
         SimpleDate d1 = new SimpleDate("3/1");
     }
 
-
+    // Testing year that is not leap year
     @Test(expected = IllegalArgumentException.class)
     public void testIncorrectLeapYear() {
         SimpleDate d1 = new SimpleDate("2/29/2000");
     }
 
-
+    // Testing basic SimpleDate method
     @Test
     public void testSimpleDate() {
         SimpleDate d1 = new SimpleDate();
     }
 
+    // Testing String SimpleDate for all bad parameters
     @Test(expected = IllegalArgumentException.class)
     public void testIncorrectDate() {
         SimpleDate d1 = new SimpleDate("13/45/1700");
@@ -382,7 +385,15 @@ public class SimpleDateTest {
     // Testing the load method for a correct load of SimpleDate
     @Test
     public void testLoad() {
+        SimpleDate d1 = new SimpleDate(10, 20, 2005);
+        d1.load("test.txt");
+    }
 
+    // Testing the load method for a incorrect load of SimpleDate
+    @Test (expected = IllegalArgumentException.class)
+    public void testLoad2() {
+        SimpleDate d1 = new SimpleDate(10, 20, 2005);
+        d1.load("");
     }
 
 
@@ -404,16 +415,16 @@ public class SimpleDateTest {
     // Testing greaterMD method
     @Test
     public void testGreaterMD() {
-        SimpleDate d1 = new SimpleDate(12, 30, 2010);
-        SimpleDate d2 = new SimpleDate(12, 31, 2010);
-        assertTrue(d2.greaterMD(d1));
+        SimpleDate d1 = new SimpleDate(12, 31, 2010);
+        SimpleDate d2 = new SimpleDate(11, 30, 2010);
+        assertTrue(d1.greaterMD(d2));
     }
     // Testing greaterMD method for false
     @Test
     public void testGreaterMD2() {
-        SimpleDate d1 = new SimpleDate(12, 30, 2010);
-        SimpleDate d2 = new SimpleDate(12, 31, 2010);
-        assertFalse(d1.greaterMD(d2));
+        SimpleDate d1 = new SimpleDate(12, 31, 2010);
+        SimpleDate d2 = new SimpleDate(11, 30, 2010);
+        assertFalse(d2.greaterMD(d1));
     }
     // Testing lesserMDY method for true
     @Test
@@ -429,13 +440,14 @@ public class SimpleDateTest {
         SimpleDate d2 = new SimpleDate(11, 30, 2010);
         assertFalse(d2.greaterMDY(d1));
     }
-
+    // Testing daysSince method for negative days
     @Test
     public void testDaysSince() {
         SimpleDate d1 = new SimpleDate(1, 15, 2019);
         SimpleDate d2 = new SimpleDate(1, 25, 2019);
         Assert.assertEquals(-10, d1.daysSince(d2));
     }
+    // Testing daysSince method for different months
     @Test
     public void testDaysSince2() {
         SimpleDate d1 = new SimpleDate("3/2/2020");
@@ -443,6 +455,7 @@ public class SimpleDateTest {
         Assert.assertEquals(-3, d2.daysSince(d1));
         Assert.assertEquals(3, d1.daysSince(d2));
     }
+    // Testing daysSince method for different years
      @Test
     public void testDaysSince3() {
         SimpleDate d1 = new SimpleDate("3/2/2019");
@@ -450,58 +463,80 @@ public class SimpleDateTest {
         Assert.assertEquals(-365, d2.daysSince(d1));
         Assert.assertEquals(365, d1.daysSince(d2));
     }
-
-
+    // Testing daysSince method for same day
+    @Test
+    public void testDaysSince4() {
+        SimpleDate d1 = new SimpleDate("3/2/2019");
+        SimpleDate d2 = new SimpleDate("3/2/2019");
+        Assert.assertEquals(0, d2.daysSince(d1));
+        Assert.assertEquals(0, d1.daysSince(d2));
+    }
+    // Testing ordinalDate method
     @Test
     public void testOrdinalDate() {
         SimpleDate d1 = new SimpleDate(02, 10, 2013);
         assertTrue(d1.ordinalDate() == 41);
-
     }
+    // Testing ordinalDate method for leapyear
     @Test
     public void testOrdinalDate2() {
         SimpleDate d1 = new SimpleDate(03, 1, 2020);
         assertTrue(d1.ordinalDate() == 61);
-
     }
 
-
-
+    // Testing ordinalDate method for whole year
+    @Test
+    public void testOrdinalDate3() {
+        SimpleDate d1 = new SimpleDate(12, 31, 2019);
+        assertTrue(d1.ordinalDate() == 365);
+    }
+    // Testing ordinalDate method for whole year on a leap year
+    @Test
+    public void testOrdinalDate4() {
+        SimpleDate d1 = new SimpleDate(12, 31, 2020);
+        assertTrue(d1.ordinalDate() == 366);
+    }
+    // Testing setMonth method for correct month
     @Test
     public void testSetMonth() {
         SimpleDate d1 = new SimpleDate(03, 1, 2020);
         d1.setMonth(4);
         assertTrue(d1.getMonth() == 4);
     }
+    // Testing setMonth method for incorrect month
     @Test (expected = IllegalArgumentException.class)
     public void testSetMonth2() {
         SimpleDate d1 = new SimpleDate(03, 1, 2020);
         d1.setMonth(20);
     }
+   
+    // Testing setDay method for correct day set
     @Test
     public void testSetDay() {
         SimpleDate d1 = new SimpleDate(03, 1, 2020);
         d1.setDay(4);
         assertTrue(d1.getDay() == 4);
     }
+    // Testing setDay method for incorrect day
     @Test (expected = IllegalArgumentException.class)
     public void testSetDay2() {
         SimpleDate d1 = new SimpleDate(03, 1, 2020);
         d1.setDay(54);
     }
+    // Testing setYear method for correct year
     @Test
     public void testSetYear() {
         SimpleDate d1 = new SimpleDate(03, 1, 2020);
         d1.setYear(2004);
         assertTrue(d1.getYear() == 2004);
     }
+    // Testing setYear method for incorrect year
     @Test (expected = IllegalArgumentException.class)
     public void testSetYear2() {
         SimpleDate d1 = new SimpleDate(03, 1, 2020);
         d1.setYear(20);
     }
-
-
+    // Testing getNumberOfSimpleDates method for correct amount
     @Test
     public void testGetNumberOfSimpleDates() {
         SimpleDate.setCounter(0);
@@ -509,7 +544,7 @@ public class SimpleDateTest {
         SimpleDate d2 = new SimpleDate(12, 31, 2010);
         assertTrue(d2.getNumberOfSimpleDates() == 2);
     }
-
+    // Testing the SimpleDate other method for correct parameters
     @Test
     public void testSimpleDateOther() {
         SimpleDate d1 = new SimpleDate(12, 31, 2010);
