@@ -472,7 +472,10 @@ public class SimpleDate {
      * @return Returns true if this date is less than the other
      */
     public boolean lesserMD(SimpleDate other) {
-        return this.month <= other.month;
+        if(this.month == other.month)
+            return this.day < other.day;
+        else
+            return this.month < other.month;
 
     }
 
@@ -484,7 +487,10 @@ public class SimpleDate {
      * @return Returns true if this date is greater than the other
      */
     public boolean greaterMD(SimpleDate other) {
-        return this.month >= other.month;
+        if(this.month == other.month)
+            return this.day > other.day;
+        else
+            return this.month > other.month;
     }
 
     /**
@@ -495,7 +501,13 @@ public class SimpleDate {
      * @return Returns true if this date is less than the other
      */
     public boolean lesserMDY(SimpleDate other) {
-        return this.month <= other.month || (this.year < other.year);
+        if(this.year == other.year)
+            if(this.month == other.month)
+                return this.day < other.day;
+            else
+                return this.month < other.month;
+        else
+            return this.year < other.year;
     }
 
     /**
@@ -506,7 +518,13 @@ public class SimpleDate {
      * @return Returns true if this date is less than the other
      */
     public boolean greaterMDY(SimpleDate other) {
-        return this.month >= other.month || (this.year > other.year);
+        if(this.year == other.year)
+            if(this.month == other.month)
+                return this.day > other.day;
+            else
+                return this.month > other.month;
+        else
+            return this.year > other.year;
     }
 
     /**

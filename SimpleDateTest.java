@@ -3,8 +3,7 @@ package project1;
 import org.junit.Assert;
 import org.junit.Test;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 /**
  * This is just a small sample of JUnits, you are to write
@@ -45,13 +44,13 @@ public class SimpleDateTest {
     public void testCompareTo3() {
         SimpleDate d1 = new SimpleDate("3/1/2013");
         SimpleDate d2 = new SimpleDate("3/1/2013");
-        assertTrue(d1.compareTo(d2) == 0);
+        assertEquals(0, d1.compareTo(d2));
     }
     @Test
     public void testCompareTo4() {
         SimpleDate d1 = new SimpleDate("3/1/2012");
         SimpleDate d2 = new SimpleDate("3/1/2013");
-        assertTrue(d1.compareTo(d2) == -1);
+        assertEquals(d1.compareTo(d2), -1);
     }
 
 
@@ -405,15 +404,15 @@ public class SimpleDateTest {
     // Testing greaterMD method
     @Test
     public void testGreaterMD() {
-        SimpleDate d1 = new SimpleDate(12, 31, 2010);
-        SimpleDate d2 = new SimpleDate(12, 30, 2010);
+        SimpleDate d1 = new SimpleDate(12, 30, 2010);
+        SimpleDate d2 = new SimpleDate(12, 31, 2010);
         assertTrue(d2.greaterMD(d1));
     }
     // Testing greaterMD method for false
     @Test
     public void testGreaterMD2() {
-        SimpleDate d1 = new SimpleDate(12, 31, 2010);
-        SimpleDate d2 = new SimpleDate(12, 30, 2010);
+        SimpleDate d1 = new SimpleDate(12, 30, 2010);
+        SimpleDate d2 = new SimpleDate(12, 31, 2010);
         assertFalse(d1.greaterMD(d2));
     }
     // Testing lesserMDY method for true
@@ -444,14 +443,14 @@ public class SimpleDateTest {
         Assert.assertEquals(-3, d2.daysSince(d1));
         Assert.assertEquals(3, d1.daysSince(d2));
     }
-    /** @Test
+     @Test
     public void testDaysSince3() {
         SimpleDate d1 = new SimpleDate("3/2/2019");
         SimpleDate d2 = new SimpleDate("3/2/2018");
         Assert.assertEquals(-365, d2.daysSince(d1));
         Assert.assertEquals(365, d1.daysSince(d2));
     }
-     */
+
 
     @Test
     public void testOrdinalDate() {
