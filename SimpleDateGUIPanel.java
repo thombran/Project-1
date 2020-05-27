@@ -14,11 +14,8 @@ import java.text.NumberFormat;
 public class SimpleDateGUIPanel extends JPanel {
     private SimpleDate simpledate;
 
-    private final JMenuItem save;
-    private final JMenuItem load;
-
     private final JButton incrementButton, daysFromNowButton, daySinceButton, isLeapYearButton,
-            toStringButton, ordinalDateButton, changeButton;
+            toStringButton, ordinalDateButton, changeButton, saveButton, loadButton;
 
     JTextField inputDateField, intField, otherDateField;
 
@@ -26,7 +23,7 @@ public class SimpleDateGUIPanel extends JPanel {
 
     JFileChooser chooser;
 
-    public SimpleDateGUIPanel(JMenuItem save, JMenuItem load) {
+    public SimpleDateGUIPanel() {
         //simpledate = new SimpleDate();
 
         setLayout(new GridLayout(8, 2));
@@ -53,6 +50,8 @@ public class SimpleDateGUIPanel extends JPanel {
         toStringButton = new JButton("Show Date");
         ordinalDateButton = new JButton("Show Ordinal Date");
         changeButton = new JButton("Change Date");
+        saveButton = new JButton("Save");
+        loadButton = new JButton("Load");
 
         add(incrementButton);
         add(daysFromNowButton);
@@ -60,7 +59,8 @@ public class SimpleDateGUIPanel extends JPanel {
         add(isLeapYearButton);
         add(toStringButton);
         add(ordinalDateButton);
-
+        add(saveButton);
+        add(loadButton);
         add(changeButton);
 
         label = new JLabel("Date:");
@@ -75,12 +75,8 @@ public class SimpleDateGUIPanel extends JPanel {
         toStringButton.addActionListener(listen);
         ordinalDateButton.addActionListener(listen);
         changeButton.addActionListener(listen);
-
-        this.load = load;
-        this.save = save;
-
-        load.addActionListener(listen);
-        save.addActionListener(listen);
+        saveButton.addActionListener(listen);
+        loadButton.addActionListener(listen);
 
     }
 
@@ -119,7 +115,7 @@ public class SimpleDateGUIPanel extends JPanel {
                 SimpleDate temp = new SimpleDate(inputDateField.getText());
                 label.setText(String.valueOf(temp.ordinalDate()));
             }
-            if (arg0.getSource() == save) {
+            if (arg0.getSource() == saveButton) {
                 SimpleDate temp = new SimpleDate(inputDateField.getText());
                 chooser.showSaveDialog(getParent());
                 File f = chooser.getSelectedFile();
@@ -127,7 +123,7 @@ public class SimpleDateGUIPanel extends JPanel {
                 temp.save(chooser.getName(f));
                 label.setText(temp.toString() + " saved!");
             }
-            if (arg0.getSource() == load) {
+            if (arg0.getSource() == loadButton) {
                 SimpleDate temp = new SimpleDate(inputDateField.getText());
                 chooser.showOpenDialog(getParent());
                 File f = chooser.getSelectedFile();
