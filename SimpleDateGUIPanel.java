@@ -85,51 +85,100 @@ public class SimpleDateGUIPanel extends JPanel {
 
         public void actionPerformed(ActionEvent arg0) {
             if (arg0.getSource() == changeButton) {
-                inc = new SimpleDate(inputDateField.getText());
-                label.setText(inc.toString());
+                try {
+                    inc = new SimpleDate(inputDateField.getText());
+                    label.setText(inc.toString());
+                }
+                catch (IllegalArgumentException e){
+                    label.setText("Error: Invalid Date!");
+                }
             }
             if (arg0.getSource() == incrementButton) {
                 inc.increment();
                 label.setText(inc.toString());
             }
             if (arg0.getSource() == daysFromNowButton) {
-                SimpleDate temp = new SimpleDate(inputDateField.getText());
-                int i = Integer.parseInt(intField.getText());
-                label.setText(temp.daysFromNow(i).toString());
+                try {
+                    SimpleDate temp = new SimpleDate(inputDateField.getText());
+                    int i = Integer.parseInt(intField.getText());
+                    label.setText(temp.daysFromNow(i).toString());
+                }
+                catch (NumberFormatException n){
+                    label.setText("Not an integer");
+                }
+                catch (IllegalArgumentException e){
+                    label.setText("Error: Invalid date!");
+                }
             }
             if (arg0.getSource() == daySinceButton) {
-                SimpleDate temp = new SimpleDate(inputDateField.getText());
-                SimpleDate temp2 = new SimpleDate(otherDateField.getText());
-                String s = Integer.toString(temp.daysSince(temp2));
-                label.setText(s);
+                try {
+                    SimpleDate temp = new SimpleDate(inputDateField.getText());
+                    SimpleDate temp2 = new SimpleDate(otherDateField.getText());
+                    String s = Integer.toString(temp.daysSince(temp2));
+                    label.setText(s);
+                }
+                catch (IllegalArgumentException e){
+                    label.setText("Error: Invalid date!");
+                }
             }
             if (arg0.getSource() == isLeapYearButton) {
-                SimpleDate temp = new SimpleDate(inputDateField.getText());
-                label.setText(String.valueOf(temp.isLeapYear()));
+                try {
+                    String s;
+                    SimpleDate temp = new SimpleDate(inputDateField.getText());
+                    s = (String.valueOf(temp.isLeapYear()));
+                    if (s.equals("true")) {
+                        label.setText("Yes!");
+                    } else {
+                        label.setText("No!");
+                    }
+                }
+                catch (IllegalArgumentException e){
+                    label.setText("Error: Invalid date!");
+                }
             }
             if (arg0.getSource() == toStringButton) {
-                SimpleDate temp = new SimpleDate(inputDateField.getText());
-                label.setText(temp.toString());
+                try {
+                    SimpleDate temp = new SimpleDate(inputDateField.getText());
+                    label.setText(temp.toString());
+                }
+                catch (IllegalArgumentException e){
+                    label.setText("Error: Invalid date!");
+                }
             }
             if (arg0.getSource() == ordinalDateButton) {
-                SimpleDate temp = new SimpleDate(inputDateField.getText());
-                label.setText(String.valueOf(temp.ordinalDate()));
+                try {
+                    SimpleDate temp = new SimpleDate(inputDateField.getText());
+                    label.setText(String.valueOf(temp.ordinalDate()));
+                }
+                catch (IllegalArgumentException e){
+                    label.setText("Error: Invalid date!");
+                }
             }
             if (arg0.getSource() == saveButton) {
-                SimpleDate temp = new SimpleDate(inputDateField.getText());
-                chooser.showSaveDialog(getParent());
-                File f = chooser.getSelectedFile();
-                StringBuilder sb = new StringBuilder();
-                temp.save(chooser.getName(f));
-                label.setText(temp.toString() + " saved!");
+                try {
+                    SimpleDate temp = new SimpleDate(inputDateField.getText());
+                    chooser.showSaveDialog(getParent());
+                    File f = chooser.getSelectedFile();
+                    StringBuilder sb = new StringBuilder();
+                    temp.save(chooser.getName(f));
+                    label.setText(temp.toString() + " saved!");
+                }
+                catch (IllegalArgumentException e){
+                    label.setText("Cannot save invalid date!");
+                }
             }
             if (arg0.getSource() == loadButton) {
-                SimpleDate temp = new SimpleDate(inputDateField.getText());
-                chooser.showOpenDialog(getParent());
-                File f = chooser.getSelectedFile();
-                StringBuilder sb = new StringBuilder();
-                temp.load(chooser.getName(f));
-                label.setText(temp.toString() + " loaded!");
+                try {
+                    SimpleDate temp = new SimpleDate();
+                    chooser.showOpenDialog(getParent());
+                    File f = chooser.getSelectedFile();
+                    StringBuilder sb = new StringBuilder();
+                    temp.load(chooser.getName(f));
+                    label.setText(temp.toString() + " loaded!");
+                }
+                catch (IllegalArgumentException e){
+                    label.setText("Could not load date!");
+                }
             }
         }
 

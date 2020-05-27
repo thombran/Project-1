@@ -1,5 +1,6 @@
 package project1;
 
+import javax.swing.*;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
@@ -7,13 +8,8 @@ import java.io.PrintWriter;
 import java.util.Scanner;
 
 /**
- * Stores and analyzes calendar dates.  THIS IS A HELPER CLASS, PLEASE
- * CREATE A SEPARATE CLASS NAMED: SimpleDate.java AND COPY THIS STARTING
- * CODE TO THIS NEW CLASS.
+ * Stores and analyzes calendar dates.
  * <p>
- * NOTE: MUCH MORE CODING IS NEEDED IN THESE METHODS, HOWEVER
- * HERE IS SOME STARTING CODE.
- *
  * @author Brandon and Dylan
  */
 
@@ -38,29 +34,29 @@ public class SimpleDate {
      * Days in each month (assuming months are numbered beginning with 1)
      **/
     private static final int[] DAYS_IN_MONTH = {0, 31, 28, 31, 30, 31, 30, 31,
-            31, 30, 31, 30, 31};
+            31, 30, 31, 30, 31};  //Starts with 0 so month "numbers" are in line with reality (i.e. index 1 is January).
 
     /**
-     *  List of months in order from January - December
+     * List of months in order from January - December
      **/
     private static final String[] MONTHS = {"January", "February", "March", "April", "May",
             "June", "July", "August", "September", "October", "November",
-            "December"};
+            "December"}; //Array to keep track of months when creating date Strings
 
 
     /**
      * Number of months in a year
      **/
-    private static final int NUM_MONTHS = 12;
+    private static final int NUM_MONTHS = 12; //Max month int that can be referenced
     /**
      * Number of days in a year
      **/
-    private static final int DAYS_YEAR = 365;
+    private static final int DAYS_YEAR = 365; //Max days in year. Used to calculate ordinal dates
 
     /**
      * The minimum year accepted as a date in the program
      **/
-    public static final int MIN_YEAR = 1753;
+    public static final int MIN_YEAR = 1753; //Earliest date allowed to be entered by user
     /**
      * Keeps track of how many instances of SimpleDate objects have been created
      */
@@ -70,8 +66,8 @@ public class SimpleDate {
      * Default constructor that sets the SimpleDate to lowest possible date.
      *****************************************************************/
     public SimpleDate() {
-        month = 01;
-        day = 01;
+        month = 1;
+        day = 1;
         year = MIN_YEAR;
         counter += 1;
     }
@@ -88,13 +84,13 @@ public class SimpleDate {
      ****************************************************************/
     public SimpleDate(String date) {
         String[] parts = date.split("/");
-        if(parts.length < 3)
+        if (parts.length < 3)
             throw new IllegalArgumentException();
-        month = Integer.parseInt(parts[0]);
+        month = Integer.parseInt(parts[0]); //Takes in string arguement and as an array and breaks that down into month, day, and year
         day = Integer.parseInt(parts[1]);
         year = Integer.parseInt(parts[2]);
-        if ((month > 12 || month < 1) || day > DAYS_IN_MONTH[month] || year < 1753
-                || day < 1 || (!isLeapYear() && month == 2 && day > 28))
+        if ((month > 12 || month < 1) || day > DAYS_IN_MONTH[month] || year < MIN_YEAR
+                || day < 1 || (!isLeapYear() && month == 2 && day > 28)) //Error if invalid date
             throw new IllegalArgumentException();
 
         counter += 1;
@@ -117,11 +113,11 @@ public class SimpleDate {
         this.month = month;
         this.day = day;
         this.year = year;
-        if (isLeapYear() && month == 2 && day > 28)
+        if (!isLeapYear() && month == 2 && day > 28) //Throws error if it is a leap year and days exceed days in February
             throw new IllegalArgumentException();
-        if ((month > 12 || month < 1) || (day > DAYS_IN_MONTH[month] || day < 1) || year < 1753
-                || (!isLeapYear() && month == 02 && day > 28)) {
-            throw new IllegalArgumentException();
+        if ((month > 12 || month < 1) || (day > DAYS_IN_MONTH[month] || day < 1) || year < MIN_YEAR
+                || (!isLeapYear() && month == 2 && day > 28)) {
+            throw new IllegalArgumentException(); //Error if invalid date
         }
         counter += 1;
     }
@@ -150,13 +146,13 @@ public class SimpleDate {
      *                                  out of bounds month)
      */
     public int daysInMonth(int month, int year) {
-        if (month > 12 || month < 1 || year < 1753) {
-            throw new IllegalArgumentException();
+        if (month > 12 || month < 1 || year < MIN_YEAR) {
+            throw new IllegalArgumentException(); //Error if month or year entered is invalid
         }
         if (month == 2 && isLeapYear(year)) {
-            return 29;
+            return 29; //Accounts for days in February in leap year
         }
-        return DAYS_IN_MONTH[month];
+        return DAYS_IN_MONTH[month]; //Otherwise just returns the days ina given month
     }
 
     /**
@@ -167,9 +163,9 @@ public class SimpleDate {
      * @throws IllegalArgumentException if input is before 1753
      */
     public static boolean isLeapYear(int year) {
-        if (year < 1753)
-            throw new IllegalArgumentException();
-        return year % 4 == 0 && (year % 100 != 0 || year % 400 == 0);
+        if (year < MIN_YEAR)
+            throw new IllegalArgumentException(); //Error if year is invalid
+        return year % 4 == 0 && (year % 100 != 0 || year % 400 == 0); //Checks if date is evenly divisible by 4 and either not divisible by a century or divisible by 400 years
     }
 
     /**
@@ -189,7 +185,7 @@ public class SimpleDate {
      */
     public String toString() {
         return "" + MONTHS[this.month - 1] + " " + this.day + ", " +
-                this.year;
+                this.year; //Lays out the date in Month (spelled out), day and year format (i.e. January 1, 2020)
     }
 
     /**
@@ -201,17 +197,17 @@ public class SimpleDate {
      * @throws IllegalArgumentException if other object is null or not an instance of SimpleDate
      */
     public boolean equals(Object other) {
-        SimpleDate o;
+        SimpleDate o; //Creates new object to load the "other" date into
         if (other != null) {
             if (other instanceof SimpleDate) {
-                o = (SimpleDate) other;
+                o = (SimpleDate) other; //If other is actually a SimpleDate, then o is created
                 if (this.day == o.day && this.month == o.month && this.year == o.year) {
-                    return true;
+                    return true; //If they two dates are the exact same
                 } else
                     return false;
             }
         }
-        throw new IllegalArgumentException();
+        throw new IllegalArgumentException(); //Error if the two dates/objects cannot be compared
     }
 
     /**
@@ -226,15 +222,14 @@ public class SimpleDate {
      */
     public int compareTo(SimpleDate other) {
         if (other != null) {
-            if (this.year > other.year)
-                return 1;
+            if (this.equals(other))
+                return 0; //If the two dates are equal returns 1
             else if (this.year < other.year)
-                return -1;
-            else if (this.equals(other))
-                return 0;
-            return 2;
+                return -1; //If this date is less than the other, returns -1
+            else
+                return 1; //returns a 1 if this date is greater than the other
         } else
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException(); //Error if the other SimpleDate is null or invalid
     }
 
     /**
@@ -246,19 +241,19 @@ public class SimpleDate {
      */
     public void save(String fileName) {
         PrintWriter out = null;
-        try {
+        try { //Attempts to write data to a specified file name
             if (fileName.length() < 1) {
-                throw new IllegalArgumentException();
+                throw new IllegalArgumentException(); //Error if the user entered file name is blank
             }
             out = new PrintWriter(new BufferedWriter(new FileWriter(fileName)));
-            out.println(this.month);
-            out.println(this.day);
-            out.println(this.year);
+            out.println(this.month); //Writes month to file first
+            out.println(this.day); //Writes day to file on separate line
+            out.println(this.year); //Writes year to file last on separate line
         } catch (Exception e) {
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException(); //Error if print writer is not able to write to file or other error occurs
 
         }
-        out.close();
+        out.close(); //Finishes the writing stream and essentially saves the file
     }
 
     /**
@@ -269,16 +264,16 @@ public class SimpleDate {
      * @throws IllegalArgumentException If the file name is invalid or does not exist
      */
     public void load(String fileName) throws IllegalArgumentException {
-        SimpleDate s = new SimpleDate();
+        SimpleDate s = new SimpleDate(); //Creates a new SimpleDate to load the saved date into
         try {
             Scanner scnr = new Scanner(new File(fileName));
-            s.month = scnr.nextInt();
-            s.day = scnr.nextInt();
-            s.year = scnr.nextInt();
+            s.month = scnr.nextInt(); //Scans for month on first line
+            s.day = scnr.nextInt(); //Scans for day on second line
+            s.year = scnr.nextInt(); //Scans for year on the third/last line
         } catch (Exception e) {
             throw new IllegalArgumentException();
         }
-        System.out.println(s.toString());
+        System.out.println(s.toString()); //Prints out the loaded date in the toString format
     }
 
     /**
@@ -289,11 +284,11 @@ public class SimpleDate {
      * leading up to the calling date object
      */
     public int ordinalDate() {
-        int days = 1;
+        int days = 1; //If date using this method is January 1, ordinal date is 1
         for (int i = 0; i < this.month; i++)
-            days += DAYS_IN_MONTH[i];
+            days += DAYS_IN_MONTH[i]; //Cycles through and adds the days of each month until it reaches current month
         if (this.isLeapYear() && this.month > 2)
-            days += 1;
+            days += 1; //Accounts for extra day in year if month is past February
         days += this.day - 1;
         return days;
     }
@@ -306,7 +301,7 @@ public class SimpleDate {
      */
     public static int getNumberOfSimpleDates() {
         return counter;
-    }
+    } //Counter of how many SimpleDates have been created
 
     /**
      * A method that returns true if SimpleDate s1 is exactly the same as SimpleDate s2 object.
@@ -316,8 +311,8 @@ public class SimpleDate {
      * @return Returns true if the two dates are the same
      */
     public static boolean equals(SimpleDate s1, SimpleDate s2) {
-        if (s1.equals(s2))
-            return true;
+        if (s1.equals(s2)) //Uses the above equals method to compare two SimpleDates
+            return true; //True if equal
         else
             return false;
     }
@@ -351,7 +346,7 @@ public class SimpleDate {
 
     public static int getCounter() {
         return counter;
-    }
+    } //Getter for counter
 
     /**
      * Sets the date's month to the specified value
@@ -360,8 +355,8 @@ public class SimpleDate {
      */
     public void setMonth(int month) {
         if (month > 12 || month < 1)
-            throw new IllegalArgumentException();
-        this.month = month;
+            throw new IllegalArgumentException(); //Error if month is invalid, like 13
+        this.month = month; //otherwise sets SimpleDate month to specified number
     }
 
     /**
@@ -370,9 +365,9 @@ public class SimpleDate {
      * @param day The desired day represented by a 1-31 integer
      */
     public void setDay(int day) {
-        if (day > DAYS_IN_MONTH[this.month] || day < 1 || day > 31)
-            throw new IllegalArgumentException();
-        this.day = day;
+        if (day > DAYS_IN_MONTH[this.month] || day < 1)
+            throw new IllegalArgumentException(); //Error if day is invalid, like 32
+        this.day = day; //Otherwise sets SimpleDate day to specified number
     }
 
     /**
@@ -381,9 +376,9 @@ public class SimpleDate {
      * @param year The desired year represented by an integer value > 1753
      */
     public void setYear(int year) {
-        if (year < 1753)
-            throw new IllegalArgumentException();
-        this.year = year;
+        if (year < MIN_YEAR)
+            throw new IllegalArgumentException(); //Error if year is invalid, i.e. less than MIN_YEAR
+        this.year = year; //Otherwise sets SimpleDate year to speicifed number
     }
 
     /**
@@ -393,7 +388,7 @@ public class SimpleDate {
      */
     public static void setCounter(int counter) {
         if (counter < 0)
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException(); //Error if arguement is negative because there cannot be a negative amount of isntances of an object
         SimpleDate.counter = counter;
     }
 
@@ -404,11 +399,11 @@ public class SimpleDate {
     public void increment() {
         this.day++;
         if (this.day > DAYS_IN_MONTH[this.month]) {
-            if (isLeapYear() && this.month == 02 && this.day < 30)
-                return;
-            this.month++;
-            day = 1;
-            if (month == 13) {
+            if (isLeapYear() && this.month == 2 && this.day < 30)
+                return; //Accounts for leap year by allowing one extra day in February when comparing to the days in a given month
+            this.month++; //Increases the month by 1 if the amount of days exceeds days in a month
+            day = 1; //Sets day back to one since a new month has started
+            if (month == 13) { //Checks to see if increment has led to a new year, in which case date returns to January 1 of year + 1
                 month = 1;
                 day = 1;
                 year++;
@@ -422,22 +417,22 @@ public class SimpleDate {
      */
     public void decrement() {
         if (this.day == 1) {
-            if (isLeapYear() && this.month == 03 && this.day == 1) {
+            if (isLeapYear() && this.month == 3 && this.day == 1) {
                 this.month--;
                 this.day = 29;
-                return;
+                return; //Accounts for leap year by allowing date to move to February 29 when moving date backwards/decrementing
             } else if (month == 1 && day == 1) {
                 month = 12;
                 day = 31;
-                year--;
+                year--; //Allows for date to move into last day of previous year when current date is the first of the current year
                 return;
             } else {
                 this.month--;
                 this.day = DAYS_IN_MONTH[month];
-                return;
+                return; //Otherwise program decreases month by 1 if day is first of a month
             }
         }
-        this.day--;
+        this.day--; //If none of the above applies and it is not the first day of any month, the day decreases by 1
     }
 
     /**
@@ -451,11 +446,11 @@ public class SimpleDate {
         SimpleDate fromNow = new SimpleDate(this.month, this.day, this.year);
         if (n > 0) {
             for (int i = 0; i < n; i++)
-                fromNow.increment();
+                fromNow.increment(); //Increments the local SimpleDate until it reaches the amount of n days specified by user
             return fromNow;
         } else if (n < 0) {
             for (int i = 0; i > n; i--)
-                fromNow.decrement();
+                fromNow.decrement(); //Decrements the local SimpleDate until it reaches the amount of n days specified by the user
             return fromNow;
         } else return this;
     }
@@ -468,11 +463,10 @@ public class SimpleDate {
      * @return Returns true if this date is less than the other
      */
     public boolean lesserMD(SimpleDate other) {
-        if(this.month == other.month)
-            return this.day < other.day;
+        if (this.month == other.month)
+            return this.day < other.day; //If months are equal, returns true if this day is less than the other
         else
-            return this.month < other.month;
-
+            return this.month < other.month; //Otherwise if months are not the same, it just returns if this month is less than the other
     }
 
     /**
@@ -483,10 +477,10 @@ public class SimpleDate {
      * @return Returns true if this date is greater than the other
      */
     public boolean greaterMD(SimpleDate other) {
-        if(this.month == other.month)
-            return this.day > other.day;
+        if (this.month == other.month)
+            return this.day > other.day; //If months are equal, returns true if this day is greater than the other
         else
-            return this.month > other.month;
+            return this.month > other.month; //Otheerwise if months are not the same, it just returns if this month is greater than the other
     }
 
     /**
@@ -497,13 +491,13 @@ public class SimpleDate {
      * @return Returns true if this date is less than the other
      */
     public boolean lesserMDY(SimpleDate other) {
-        if(this.year == other.year)
-            if(this.month == other.month)
-                return this.day < other.day;
+        if (this.year == other.year) //Checks if the years are the same
+            if (this.month == other.month) //If years are the same, checks if months are the same
+                return this.day < other.day;  //If months are the same, returns if this day is less than other
             else
-                return this.month < other.month;
+                return this.month < other.month; //If months are not the same, returns if this month is less than other
         else
-            return this.year < other.year;
+            return this.year < other.year; //If years are not the same returns if this year is less than other
     }
 
     /**
@@ -514,13 +508,13 @@ public class SimpleDate {
      * @return Returns true if this date is less than the other
      */
     public boolean greaterMDY(SimpleDate other) {
-        if(this.year == other.year)
-            if(this.month == other.month)
-                return this.day > other.day;
+        if (this.year == other.year) //Checks if the years are the same
+            if (this.month == other.month) //If year are the same, checks if the months are the same
+                return this.day > other.day; //If months are the same, reutns if this day is greater than other
             else
-                return this.month > other.month;
+                return this.month > other.month; //If months are not the same, returns if this month is greater than other
         else
-            return this.year > other.year;
+            return this.year > other.year; //If years are not the same returns if this year is greater than other
     }
 
     /**
@@ -532,40 +526,38 @@ public class SimpleDate {
      */
 
     public int daysSince(SimpleDate other) {
-        int days = 0;
+        int days = 0; //If two dates are the same, the days between each other must be zero so days starts at 0
         SimpleDate temp1 = new SimpleDate(this);
-        SimpleDate temp2 = new SimpleDate(other);
-        if (temp1.year == temp2.year) {
+        SimpleDate temp2 = new SimpleDate(other); //Creates two new SimpleDate objects so as to not change the dates which will be used in GUI
+        if (temp1.year == temp2.year) { //If years are the same, checks to see if months/days of the this/temp1 date is less than the other
             if (temp1.lesserMD(temp2)) {
                 while (temp1.day != temp2.day || (temp1.month != temp2.month)) {
-                    temp1.increment();
+                    temp1.increment(); //Increases this date until the two dates are equal
                     days--;
                 }
                 return days;
-            } else if (temp1.greaterMD(temp2)) {
+            } else if (temp1.greaterMD(temp2)) { //If years are the same, checks to see if months/days of the this/temp1 date is greater than the other
                 while (temp1.day != temp2.day || (temp1.month != temp2.month)) {
-                    temp1.decrement();
+                    temp1.decrement(); //Decreases this date until the two dates are equal
                     days++;
                 }
                 return days;
             } else
                 return 0;
         } else {
-            if (temp1.lesserMDY(temp2)) {
+            if (temp1.lesserMDY(temp2)) { //If years are not the same, checks to see if months/days of the this/temp1 date is lesser than the other
                 while (temp1.day != temp2.day || temp1.month != temp2.month || temp1.year != temp2.year) {
-                    temp1.increment();
+                    temp1.increment(); //Increases this date until the two dates are equal
                     days--;
                 }
                 return days;
-            } else if (temp1.greaterMDY(temp2)) {
+            } else { //If years are not the same, defaults to assuming this/temp1 date is greater than the other
                 while (temp1.day != temp2.day || temp1.month != temp2.month || temp1.year != temp2.year) {
-                    temp1.decrement();
+                    temp1.decrement(); //Decreases this date until the two dates are equal
                     days++;
                 }
                 return days;
-            } else
-                return 0;
+            }
         }
-
     }
 }// end SimpleDate
