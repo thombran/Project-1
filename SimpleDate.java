@@ -136,10 +136,6 @@ public class SimpleDate {
         this.day = other.day;
         this.year = other.year;
         this.month = other.month;
-        if (month > 12 || day > DAYS_IN_MONTH[month] || year < 1753
-                || month < 1 || day < 1 || (!isLeapYear() && month == 02 && day > 28)) {
-            throw new IllegalArgumentException();
-        }
         counter += 1;
     }
 
